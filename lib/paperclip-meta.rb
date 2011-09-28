@@ -17,7 +17,7 @@ module Paperclip
       original_post_process_styles
 
       if instance.respond_to?(:"#{name}_meta=")
-        meta ||= {}
+        #meta ||= {}
 
         @queued_for_write.each do |style, file|
           begin
@@ -45,6 +45,14 @@ module Paperclip
     end
 
     private
+
+    def meta
+      if instance.respond_to?(:"#{name}_meta") && instance_read(:meta)
+        @meta ||= Marshal.load(ActiveSupport::Base64.decode64(instance_read(:meta)))
+      end
+      @meta ||= {}
+    end
+
     def meta_read(style, item)
       if instance.respond_to?(:"#{name}_meta") && instance_read(:meta)
         if meta = Marshal.load(ActiveSupport::Base64.decode64(instance_read(:meta)))
