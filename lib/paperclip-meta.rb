@@ -17,7 +17,7 @@ module Paperclip
       original_post_process_styles
 
       if instance.respond_to?(:"#{name}_meta=")
-        meta = {}
+        meta ||= {}
 
         @queued_for_write.each do |style, file|
           begin
