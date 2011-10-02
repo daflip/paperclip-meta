@@ -56,7 +56,7 @@ module Paperclip
     def meta_read(style, item)
       if instance.respond_to?(:"#{name}_meta") && instance_read(:meta)
         if meta = Marshal.load(ActiveSupport::Base64.decode64(instance_read(:meta)))
-          meta.key?(style) ? meta[style][item] : nil
+          meta.key?(style) ? meta[style][item].to_i : 0
         end
       end
     end    
