@@ -17,18 +17,18 @@ module Paperclip
       original_post_process_styles
 
       if instance.respond_to?(:"#{name}_meta=")
-        #meta ||= {}
+        meta # init
 
         @queued_for_write.each do |style, file|
           begin
             geo = Geometry.from_file file
-            meta[style] = {:width => geo.width.to_i, :height => geo.height.to_i, :size => File.size(file) }
+            @meta[style] = {:width => geo.width.to_i, :height => geo.height.to_i, :size => File.size(file) }
           rescue NotIdentifiedByImageMagickError => e
-            meta[style] = {}
+            @meta[style] = {}
           end
         end
 
-        instance_write(:meta, ActiveSupport::Base64.encode64(Marshal.dump(meta)))
+        instance_write(:meta, ActiveSupport::Base64.encode64(Marshal.dump(@meta)))
       end
     end
 
@@ -38,6 +38,14 @@ module Paperclip
         style = args.first || default_style
         meta_read(style, meth)
       end
+    end
+
+    def meta_write(meta_data)
+      meta # init
+      meta_data.each do |style,style_meta_data|
+        @meta[style.to_sym] = style_meta_data
+      end
+      instance_write(:meta, ActiveSupport::Base64.encode64(Marshal.dump(@meta)))
     end
 
     def image_size(style = default_style)
@@ -54,11 +62,8 @@ module Paperclip
     end
 
     def meta_read(style, item)
-      if instance.respond_to?(:"#{name}_meta") && instance_read(:meta)
-        if meta = Marshal.load(ActiveSupport::Base64.decode64(instance_read(:meta)))
-          meta.key?(style) ? meta[style][item].to_i : 0
-        end
-      end
-    end    
+      meta
+      @meta.key?(style) ? @meta[style][item].to_i : nil
+    end
   end
 end
