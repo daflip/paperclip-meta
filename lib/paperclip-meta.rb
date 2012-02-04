@@ -52,14 +52,14 @@ module Paperclip
       "#{width(style)}x#{height(style)}"
     end
 
-    private
-
     def meta
       if instance.respond_to?(:"#{name}_meta") && instance_read(:meta)
         @meta ||= Marshal.load(ActiveSupport::Base64.decode64(instance_read(:meta)))
       end
       @meta ||= {}
     end
+
+    private
 
     def meta_read(style, item)
       meta
