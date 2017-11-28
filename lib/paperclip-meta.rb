@@ -49,6 +49,17 @@ module Paperclip
       instance_write(:meta, ActiveSupport::Base64.encode64(Marshal.dump(@meta)))
     end
 
+    # overwrite paperclips URL so we check meta for a url and use that if it's set
+    # otherwise fallback to paperclip standard behavior
+    def url(style_name = default_style, use_timestamp = @use_timestamp)                                                                                                                                                           
+      if meta and meta.has_key?(style_name) and meta[style_name][:url]
+        meta[style_name][:url]
+      else
+        default_url = @default_url.is_a?(Proc) ? @default_url.call(self) : @default_url
+        url = original_filename.nil? ? interpolate(default_url, style_name) : interpolate(@url, style_name)
+        use_timestamp && updated_at ? [url, updated_at].compact.join(url.include?("?") ? "&" : "?") : url
+      end
+    end
 
     def image_size(style = default_style)
       "#{width(style)}x#{height(style)}"
