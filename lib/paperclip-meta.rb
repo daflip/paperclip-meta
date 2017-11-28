@@ -49,10 +49,15 @@ module Paperclip
       instance_write(:meta, ActiveSupport::Base64.encode64(Marshal.dump(@meta)))
     end
 
+    # if this attachment is a remote url (i.e. not local filesystem)
+    def remote_url?(style_name = default_style)
+      return (meta and meta.has_key?(style_name) and meta[style_name][:url])
+    end
+
     # overwrite paperclips URL so we check meta for a url and use that if it's set
     # otherwise fallback to paperclip standard behavior
     def url(style_name = default_style, use_timestamp = @use_timestamp)                                                                                                                                                           
-      if meta and meta.has_key?(style_name) and meta[style_name][:url]
+      if remote_url?(style_name)
         meta[style_name][:url]
       else
         default_url = @default_url.is_a?(Proc) ? @default_url.call(self) : @default_url
