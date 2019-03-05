@@ -40,6 +40,16 @@ module Paperclip
       end
     end
 
+    def srcset(options = {})
+      meta # init
+      # use srcset if requested..
+      @meta.map do  |style_name,meta_attrs| 
+        if (not options[:exclude_srcset_styles]) or (not options[:exclude_srcset_styles].include?(style_name))
+          "#{self.url(style_name)} #{meta_attrs[:width].to_i}w" 
+        end
+      end.compact.join(', ')
+    end
+
     def meta_write(meta_data)
       meta # init
       meta_data.each do |style,style_meta_data|
