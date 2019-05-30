@@ -27,7 +27,7 @@ module Paperclip
             @meta[style] = {}
           end
         end
-
+        @meta = Hash[@meta.sort_by do |meta_style_name,meta_style| 0 - (meta_style[:width].to_i * meta_style[:height].to_i) end]
         instance_write(:meta, ActiveSupport::Base64.encode64(Marshal.dump(@meta)))
       end
     end
