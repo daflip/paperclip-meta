@@ -6,7 +6,7 @@ module Paperclip
     # If attachment deleted - destroy meta data
     def save
       if (not @queued_for_delete.empty?) and @queued_for_write.empty?
-        instance_write(:meta, ActiveSupport::Base64.encode64(Marshal.dump({}))) if instance.respond_to?(:"#{name}_meta=")
+        instance_write(:meta,  Base64.strict_encode64(Marshal.dump({}))) if instance.respond_to?(:"#{name}_meta=")
       end
       original_save
     end
@@ -28,7 +28,7 @@ module Paperclip
           end
         end
         @meta = Hash[@meta.sort_by do |meta_style_name,meta_style| 0 - (meta_style[:width].to_i * meta_style[:height].to_i) end]
-        instance_write(:meta, ActiveSupport::Base64.encode64(Marshal.dump(@meta)))
+        instance_write(:meta,  Base64.strict_encode64(Marshal.dump(@meta)))
       end
     end
 
@@ -68,7 +68,7 @@ module Paperclip
         @meta[style.to_sym] = style_meta_data
       end
       @meta = weighted_styles(@meta)
-      instance_write(:meta, ActiveSupport::Base64.encode64(Marshal.dump(@meta)))
+      instance_write(:meta,  Base64.strict_encode64(Marshal.dump(@meta)))
     end
 
 
@@ -95,7 +95,7 @@ module Paperclip
 
     def meta
       if instance.respond_to?(:"#{name}_meta") && instance_read(:meta)
-        @meta ||= Marshal.load(ActiveSupport::Base64.decode64(instance_read(:meta)))
+        @meta ||= Marshal.load( Base64.strict_decode64(instance_read(:meta)))
       end
       @meta ||= {}
     end
