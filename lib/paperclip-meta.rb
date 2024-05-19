@@ -95,7 +95,7 @@ module Paperclip
 
     def meta
       if instance.respond_to?(:"#{name}_meta") && instance_read(:meta)
-        @meta ||= Marshal.load( Base64.strict_decode64(instance_read(:meta)))
+        @meta ||= Marshal.load( Base64.strict_decode64(instance_read(:meta).tr("\n", "")))
       end
       @meta ||= {}
     end
