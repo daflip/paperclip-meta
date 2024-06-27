@@ -18,17 +18,15 @@ module Paperclip
 
       if instance.respond_to?(:"#{name}_meta=")
         meta # init
-
         @queued_for_write.each do |style, file|
           begin
             geo = Geometry.from_file file
-            @meta[style] = {:width => geo.width.to_i, :height => geo.height.to_i, :size => File.size(file) }
+            @meta[style] = { width: geo.width.to_i, height: geo.height.to_i, size: File.size(file) }
           rescue NotIdentifiedByImageMagickError => e
             @meta[style] = {}
           end
         end
-        @meta = Hash[@meta.sort_by do |meta_style_name,meta_style| 0 - (meta_style[:width].to_i * meta_style[:height].to_i) end]
-        instance_write(:meta,  Base64.strict_encode64(Marshal.dump(@meta)))
+        meta_write!
       end
     end
 
@@ -62,15 +60,19 @@ module Paperclip
       end]
     end
 
+    def meta_write!
+      # re-sort when writing, both in the instance variable and in the marshalled data we dump
+      @meta = weighted_styles(meta)
+      instance_write(:meta,  Base64.strict_encode64(Marshal.dump( @meta )))
+    end
+
     def meta_write(meta_data)
       meta # init
       meta_data.each do |style,style_meta_data|
         @meta[style.to_sym] = style_meta_data
       end
-      @meta = weighted_styles(@meta)
-      instance_write(:meta,  Base64.strict_encode64(Marshal.dump(@meta)))
+      meta_write!
     end
-
 
     # if this attachment is a remote url (i.e. not local filesystem)
     def remote_url?(style_name = default_style)
@@ -94,6 +96,7 @@ module Paperclip
     end
 
     def meta
+      return @meta if @meta
       if instance.respond_to?(:"#{name}_meta") && instance_read(:meta)
         @meta ||= Marshal.load( Base64.strict_decode64(instance_read(:meta).tr("\n", "")))
       end
