@@ -18,15 +18,17 @@ module Paperclip
 
       if instance.respond_to?(:"#{name}_meta=")
         meta # init
+        new_meta = {}
         @queued_for_write.each do |style, file|
           begin
             geo = Geometry.from_file file
-            @meta[style] = { width: geo.width.to_i, height: geo.height.to_i, size: File.size(file) }
+            file_size = File.size(file).to_i
+            new_meta[style] = { width: geo.width.to_i, height: geo.height.to_i, size: file_size }
           rescue NotIdentifiedByImageMagickError => e
-            @meta[style] = {}
+            new_meta[style] = {}
           end
         end
-        meta_write!
+        meta_write(new_meta)
       end
     end
 
