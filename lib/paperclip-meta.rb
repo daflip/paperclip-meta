@@ -87,7 +87,7 @@ module Paperclip
       if remote_url?(style_name)
         meta[style_name][:url]
       else
-        default_url = @default_url.is_a?(Proc) ? @default_url.call(self) : @default_url
+        default_url = options[:default_url].is_a?(Proc) ? options[:default_url].call(self) : options[:default_url]
         url = original_filename.nil? ? interpolate(default_url, style_name) : interpolate(@url, style_name)
         use_timestamp && updated_at ? [url, updated_at].compact.join(url.include?("?") ? "&" : "?") : url
       end
