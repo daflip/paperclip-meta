@@ -1,8 +1,9 @@
 source "http://rubygems.org"
 
 gem "activerecord", ">= 3", :require => "active_record"
-gem "sqlite3-ruby", :require => "sqlite3"
-gem "paperclip", :require => "paperclip"
+#gem "sqlite3-ruby", :require => "sqlite3"
+#gem "paperclip", :require => "paperclip"
+gem "kt-paperclip", require: "paperclip", git: 'https://github.com/daflip/paperclip', branch: 'kt-paperclip'
 gem "paperclip-meta", :path => '.'
 
 if RUBY_VERSION < '1.9'
