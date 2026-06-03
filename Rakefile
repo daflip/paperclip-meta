@@ -25,7 +25,7 @@ begin
     s.require_path      = "lib"
     s.rubyforge_project = "paperclip-meta"
     s.has_rdoc          = false
-    s.add_dependency 'paperclip'    
+    #s.add_dependency 'paperclip'    
   end
   
   Jeweler::GemcutterTasks.new
