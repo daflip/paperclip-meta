@@ -21,6 +21,7 @@ describe "Geometry saver plugin" do
 
     img.small_image.width eq(@small_size.width)
     img.small_image.height eq(@small_size.height)
+    img.small_image.size.should == @small_image.size
   end
 
   it "saves geometry for styles" do
@@ -31,6 +32,7 @@ describe "Geometry saver plugin" do
 
     img.big_image.width(:small).should == 100
     img.big_image.height(:small).should == 100
+    img.big_image.size(:small).should > 0
   end
 
   it "clears geometry fields when image is destroyed" do

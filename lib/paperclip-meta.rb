@@ -22,9 +22,11 @@ module Paperclip
         @queued_for_write.each do |style, file|
           begin
             geo = Geometry.from_file file
-            file_size = File.size(file).to_i
-            new_meta[style] = { width: geo.width.to_i, height: geo.height.to_i, size: file_size }
+            size = attachment_file_size(file)
+            new_meta[style] = { width: geo.width.to_i, height: geo.height.to_i, size: size }
           rescue Paperclip::Errors::NotIdentifiedByImageMagickError => e
+            puts "Paperclip::Errors::NotIdentifiedByImageMagickError => :"
+            puts e.backtrace.inspect
             new_meta[style] = {}
           end
         end
@@ -106,6 +108,18 @@ module Paperclip
     end
 
     private
+
+    def attachment_file_size(file)
+      if file.is_a?(String)
+        File.size(file)
+      elsif file.respond_to?(:size)
+        file.size
+      elsif file.respond_to?(:path)
+        File.size(file.path)
+      else
+        File.size(file)
+      end.to_i
+    end
 
     def meta_read(style, item)
       meta
