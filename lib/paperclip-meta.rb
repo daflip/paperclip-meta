@@ -107,6 +107,11 @@ module Paperclip
       @meta ||= {}
     end
 
+
+    def meta_delete(style)
+     meta.delete(style)
+    end
+
     private
 
     def attachment_file_size(file)
