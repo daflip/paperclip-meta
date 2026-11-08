@@ -6,7 +6,10 @@ module Paperclip
     # If attachment deleted - destroy meta data
     def save
       if (not @queued_for_delete.empty?) and @queued_for_write.empty?
-        instance_write(:meta,  Base64.strict_encode64(Marshal.dump({}))) if instance.respond_to?(:"#{name}_meta=")
+        if instance.respond_to?(:"#{name}_meta=")
+          @meta = {}
+          instance_write(:meta,  Base64.strict_encode64(Marshal.dump({})))
+        end
       end
       original_save
     end
@@ -17,7 +20,9 @@ module Paperclip
       original_post_process_styles(*style_args)
 
       if instance.respond_to?(:"#{name}_meta=")
-        meta # init
+        # New uploads should not keep metadata for styles from the
+        # previously assigned file (for example styles that no longer exist).
+        @meta = {} if @queued_for_write.key?(:original) || @queued_for_write.key?("original")
         new_meta = {}
         @queued_for_write.each do |style, file|
           begin

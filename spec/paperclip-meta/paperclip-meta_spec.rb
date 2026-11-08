@@ -49,6 +49,21 @@ describe "Geometry saver plugin" do
     img.big_image.width(:small).should be_nil
   end
 
+  it "clears old metadata when a new image is assigned" do
+    img = Image.new
+    img.big_image = @big_image
+    img.save!
+
+    img.big_image.meta_write(:old_style => { :width => 1, :height => 1, :size => 1 })
+    img.big_image.width(:old_style).should == 1
+
+    img.big_image = File.open(File.join(File.dirname(__FILE__), '..', 'fixtures', 'big.jpg'))
+    img.save!
+
+    img.big_image.width(:old_style).should be_nil
+    img.big_image.width(:small).should == 100
+  end
+
   it "does not fails when file is not an image" do
     img = Image.new
     img.small_image = @not_image
