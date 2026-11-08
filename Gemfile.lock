@@ -1,3 +1,18 @@
+<<<<<<< HEAD
+=======
+GIT
+  remote: https://github.com/daflip/paperclip
+  revision: 92b1b036923bf6e3564c1c4e658eb5bc59ab7cfe
+  branch: kt-paperclip
+  specs:
+    kt-paperclip (7.4.0)
+      activemodel (>= 4.2.0)
+      activesupport (>= 4.2.0)
+      marcel (>= 1.0.1)
+      mime-types
+      terrapin (>= 0.6.0)
+
+>>>>>>> parent of fedf8a1 (fix)
 PATH
   remote: .
   specs:
@@ -7,6 +22,7 @@ PATH
 GEM
   remote: http://rubygems.org/
   specs:
+<<<<<<< HEAD
     activemodel (3.0.3)
       activesupport (= 3.0.3)
       builder (~> 2.1.2)
@@ -26,6 +42,47 @@ GEM
     paperclip (2.3.6)
       activerecord
       activesupport
+=======
+    activemodel (8.1.3)
+      activesupport (= 8.1.3)
+    activerecord (8.1.3)
+      activemodel (= 8.1.3)
+      activesupport (= 8.1.3)
+      timeout (>= 0.4.0)
+    activesupport (8.1.3)
+      base64
+      bigdecimal
+      concurrent-ruby (~> 1.0, >= 1.3.1)
+      connection_pool (>= 2.2.5)
+      drb
+      i18n (>= 1.6, < 2)
+      json
+      logger (>= 1.4.2)
+      minitest (>= 5.1)
+      securerandom (>= 0.3)
+      tzinfo (~> 2.0, >= 2.0.5)
+      uri (>= 0.13.1)
+    base64 (0.3.0)
+    bigdecimal (4.1.2)
+    climate_control (1.2.0)
+    concurrent-ruby (1.3.6)
+    connection_pool (3.0.2)
+    diff-lcs (1.1.2)
+    drb (2.2.3)
+    i18n (1.14.8)
+      concurrent-ruby (~> 1.0)
+    json (2.19.8)
+    logger (1.7.0)
+    marcel (1.2.1)
+    mime-types (3.7.0)
+      logger
+      mime-types-data (~> 3.2025, >= 3.2025.0507)
+    mime-types-data (3.2026.0414)
+    minitest (6.0.6)
+      drb (~> 2.0)
+      prism (~> 1.5)
+    prism (1.9.0)
+>>>>>>> parent of fedf8a1 (fix)
     rspec (2.1.0)
       rspec-core (~> 2.1.0)
       rspec-expectations (~> 2.1.0)
@@ -34,6 +91,7 @@ GEM
     rspec-expectations (2.1.0)
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.1.0)
+<<<<<<< HEAD
     ruby-debug (0.10.4)
       columnize (>= 0.1)
       ruby-debug-base (~> 0.10.4.0)
@@ -41,6 +99,15 @@ GEM
       linecache (>= 0.3)
     sqlite3-ruby (1.3.2)
     tzinfo (0.3.23)
+=======
+    securerandom (0.4.1)
+    terrapin (1.1.1)
+      climate_control
+    timeout (0.6.1)
+    tzinfo (2.0.6)
+      concurrent-ruby (~> 1.0)
+    uri (1.1.1)
+>>>>>>> parent of fedf8a1 (fix)
 
 PLATFORMS
   ruby
